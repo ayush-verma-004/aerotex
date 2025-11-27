@@ -38,6 +38,11 @@ public class NGOProfileDto {
     @Positive(message = "Years of operation must be positive")
     private Integer yearsOfOperation;
 
+    private double latitude;
+
+    private double longitude;
+
+    private double allowedRadiusKm;
     @Data
     @Builder
     @NoArgsConstructor

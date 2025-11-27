@@ -40,6 +40,14 @@ public class NGOProfile {
 
     private LocalDateTime updatedAt;
 
+    private double latitude;
+
+    private double longitude;
+
+    private double allowedRadiusKm;
+
+//    private boolean isProfileUpdated = false;
+
     @Data
     @Builder
     @NoArgsConstructor

@@ -26,4 +26,5 @@ public class CreateNGORequestDto {
 
     @Valid
     private NGOProfileDto profile;
+
 }

@@ -9,6 +9,5 @@ import java.util.Optional;
 @Repository
 public interface NGOProfileRepository extends MongoRepository<NGOProfile, String> {
     Optional<NGOProfile> findByUserId(String userId);
-
     boolean existsByRegistrationNumber(String registrationNumber);
 }
