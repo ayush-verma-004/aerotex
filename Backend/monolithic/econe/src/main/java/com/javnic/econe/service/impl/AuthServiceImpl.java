@@ -27,6 +27,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
+import java.util.Optional;
 
 @Slf4j
 @Service
@@ -41,20 +42,71 @@ public class AuthServiceImpl implements AuthService {
     private final OtpService otpService;
     private final EmailService emailService;
 
+//    @Override
+//    @Transactional
+//    public void register(RegisterRequestDto request) {
+//        // Validate role - only FARMER and BUSINESSMAN can self-register
+//        if (request.getRole() != UserRole.FARMER && request.getRole() != UserRole.BUSINESSMAN) {
+//            throw new ValidationException("Only Farmers and Businessmen can self-register");
+//        }
+//
+//        // Check if email already exists
+//        if (userRepository.existsByEmail(request.getEmail())) {
+//            throw new ValidationException("Email already register! ");
+//        }
+//
+//        // Create user
+//        User user = User.builder()
+//                .email(request.getEmail())
+//                .password(passwordEncoder.encode(request.getPassword()))
+//                .role(request.getRole())
+//                .status(UserStatus.PENDING_VERIFICATION)
+//                .createdAt(LocalDateTime.now())
+//                .updatedAt(LocalDateTime.now())
+//                .build();
+//
+//        user = userRepository.save(user);
+//
+//        // Generate and send OTP
+//        otpService.generateAndSendOtp(user.getId(), user.getEmail());
+//
+//        log.info("User registered successfully: {} with role: {}", user.getEmail(), user.getRole());
+//    }
+
     @Override
     @Transactional
     public void register(RegisterRequestDto request) {
-        // Validate role - only FARMER and BUSINESSMAN can self-register
+        // Only FARMER and BUSINESSMAN can self-register
         if (request.getRole() != UserRole.FARMER && request.getRole() != UserRole.BUSINESSMAN) {
             throw new ValidationException("Only Farmers and Businessmen can self-register");
         }
 
-        // Check if email already exists
-        if (userRepository.existsByEmail(request.getEmail())) {
-            throw new ValidationException("Email already registered");
+        Optional<User> existingOpt = userRepository.findByEmail(request.getEmail());
+
+        if (existingOpt.isPresent()) {
+            User existingUser = existingOpt.get();
+
+            if (existingUser.getStatus() == UserStatus.ACTIVE) {
+                // Fully verified user
+                throw new ValidationException("Email already registered. Please login.");
+            }
+
+            if (existingUser.getStatus() == UserStatus.PENDING_VERIFICATION) {
+                // Not verified yet → just resend OTP
+
+                // (optional) update password/role
+                existingUser.setPassword(passwordEncoder.encode(request.getPassword()));
+                existingUser.setRole(request.getRole());
+                existingUser.setUpdatedAt(LocalDateTime.now());
+                userRepository.save(existingUser);
+
+                otpService.generateAndSendOtp(existingUser.getId(), existingUser.getEmail());
+                log.info("Resent OTP for pending user: {}", existingUser.getEmail());
+                return;
+            }
         }
 
-        // Create user
+        // New user case
         User user = User.builder()
                 .email(request.getEmail())
                 .password(passwordEncoder.encode(request.getPassword()))
@@ -66,9 +118,7 @@ public class AuthServiceImpl implements AuthService {
 
         user = userRepository.save(user);
 
-        // Generate and send OTP
         otpService.generateAndSendOtp(user.getId(), user.getEmail());
-
         log.info("User registered successfully: {} with role: {}", user.getEmail(), user.getRole());
     }
 

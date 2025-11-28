@@ -1,9 +1,11 @@
 package com.javnic.econe.dto.land.response;
 
 import com.javnic.econe.enums.LandStatus;
+import lombok.Builder;
 import lombok.Data;
 
 @Data
+@Builder
 public class CreateLandResponseDto {
 
     private double landArea;
