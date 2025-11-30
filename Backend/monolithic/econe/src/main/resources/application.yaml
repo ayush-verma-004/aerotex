@@ -1,0 +1,59 @@
+spring:
+  application:
+    name: econe
+
+  data:
+    mongodb:
+      uri: mongodb://localhost:27017/econe
+      auto-index-creation: true
+
+  mail:
+    host: smtp.gmail.com
+    port: 587
+    username: ayushverma593773@gmail.com
+    password: ugfh uhmk gnze kdok
+    from: ceo@econe.com
+    properties:
+      mail:
+        smtp:
+          auth: true
+          starttls:
+            enable: true
+            required: true
+          connectiontimeout: 5000
+          timeout: 5000
+          writetimeout: 5000
+
+  task:
+    execution:
+      pool:
+        core-size: 2
+        max-size: 5
+        queue-capacity: 100
+
+jwt:
+  secret: ${JWT_SECRET:9ONcBYp3ZGCoSJZCvlM8NOqrwN4AYnmmpda3k7XBAI95VlYvxGSLpWkmwcBTBpo/}
+  access-token-expiration: 900000
+  refresh-token-expiration: 604800000
+
+logging:
+  level:
+    root: INFO
+    com.agriculture.platform: DEBUG
+    org.springframework.security: DEBUG
+    org.springframework.data.mongodb: DEBUG
+  pattern:
+    console: "%d{yyyy-MM-dd HH:mm:ss} - %msg%n"
+    file: "%d{yyyy-MM-dd HH:mm:ss} [%thread] %-5level %logger{36} - %msg%n"
+  file:
+    name: logs/application.log
+
+server:
+  port: 8080
+  error:
+    include-message: always
+    include-binding-errors: always
+    include-stacktrace: never
+    include-exception: false
+
+

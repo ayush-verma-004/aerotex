@@ -42,37 +42,6 @@ public class AuthServiceImpl implements AuthService {
     private final OtpService otpService;
     private final EmailService emailService;
 
-//    @Override
-//    @Transactional
-//    public void register(RegisterRequestDto request) {
-//        // Validate role - only FARMER and BUSINESSMAN can self-register
-//        if (request.getRole() != UserRole.FARMER && request.getRole() != UserRole.BUSINESSMAN) {
-//            throw new ValidationException("Only Farmers and Businessmen can self-register");
-//        }
-//
-//        // Check if email already exists
-//        if (userRepository.existsByEmail(request.getEmail())) {
-//            throw new ValidationException("Email already register! ");
-//        }
-//
-//        // Create user
-//        User user = User.builder()
-//                .email(request.getEmail())
-//                .password(passwordEncoder.encode(request.getPassword()))
-//                .role(request.getRole())
-//                .status(UserStatus.PENDING_VERIFICATION)
-//                .createdAt(LocalDateTime.now())
-//                .updatedAt(LocalDateTime.now())
-//                .build();
-//
-//        user = userRepository.save(user);
-//
-//        // Generate and send OTP
-//        otpService.generateAndSendOtp(user.getId(), user.getEmail());
-//
-//        log.info("User registered successfully: {} with role: {}", user.getEmail(), user.getRole());
-//    }
-
     @Override
     @Transactional
     public void register(RegisterRequestDto request) {
