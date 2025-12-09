@@ -5,14 +5,14 @@ spring:
   data:
     mongodb:
       # Use env variable in real env, fallback only for local simple dev
-      uri: mongodb+srv://ayusho4:qwertyuiop@testing.sbmrrc2.mongodb.net/
+      uri: mongodb+srv://ayusho4:<password>@testing.sbmrrc2.mongodb.net/
       auto-index-creation: true
 
   mail:
     host: smtp.gmail.com
     port: 587
     username: ayushverma593773@gmail.com
-    password: ugfh uhmk gnze kdok
+    password: <password>
     from: ceo@econe.com
     properties:
       mail:
