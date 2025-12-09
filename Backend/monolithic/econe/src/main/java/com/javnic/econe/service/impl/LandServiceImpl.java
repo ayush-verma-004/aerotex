@@ -60,16 +60,13 @@ public class LandServiceImpl implements LandService {
     @Override
     public List<Land> getLandsInsideNgoArea() {
 
-        String ngoId = " ";
 
-        String nId = securityUtils.getCurrentUserId();
+        String ngoId = securityUtils.getCurrentUserId();
 
         NGOProfile ngoProfile = ngoProfileRepository.findById(ngoId)
                 .orElseThrow();
 
-//        if(!ngoProfile.isProfileUpdated()){
-//            throw new UnauthorizedException("Please update your profile first!");
-//        }
+
         double ngoLat = ngoProfile.getLatitude();
         double nogLon = ngoProfile.getLongitude();
 
@@ -174,18 +171,13 @@ public class LandServiceImpl implements LandService {
     @Override
     public Land verifyLand(String landId) {
 
+        String ngoId = securityUtils.getCurrentUser().getId();
+
+        NGOProfile ngoProfile = ngoProfileRepository.findByUserId(ngoId)
+                .orElseThrow();
+
         Land land = landRepository.findById(landId)
                 .orElseThrow();
-
-        String ngoId = securityUtils.getCurrentUserId();
-        String currentUserId = securityUtils.getCurrentUser().getId();
-
-        System.out.println(ngoId);
-        System.out.println(currentUserId);
-
-        NGOProfile ngoProfile = ngoProfileRepository.findById(ngoId)
-                .orElseThrow();
-
 
         double distance = GeoUtil.distanceInKm(ngoProfile.getLatitude(), ngoProfile.getLongitude(),
                 land.getLatitude(), land.getLongitude());

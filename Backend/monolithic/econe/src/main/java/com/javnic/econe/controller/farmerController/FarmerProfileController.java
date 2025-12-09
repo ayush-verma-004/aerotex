@@ -5,7 +5,7 @@ import com.javnic.econe.entity.User;
 import com.javnic.econe.enums.UserRole;
 import com.javnic.econe.exception.UnauthorizedException;
 import com.javnic.econe.security.SecurityUtils;
-import com.javnic.econe.service.ProfileService;
+import com.javnic.econe.service.FarmerService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -20,7 +20,7 @@ import org.springframework.web.bind.annotation.*;
 @PreAuthorize("hasRole('FARMER')")
 public class FarmerProfileController {
 
-    private final ProfileService profileService;
+    private final FarmerService farmerService;
     private final SecurityUtils securityUtils;
 
     @GetMapping("/get-farmer")
@@ -28,7 +28,7 @@ public class FarmerProfileController {
         User currentUser = securityUtils.getCurrentUser();
         validateRole(currentUser, UserRole.FARMER);
 
-        FarmerProfileDto profile = profileService.getFarmerProfile(currentUser.getId());
+        FarmerProfileDto profile = farmerService.getFarmerProfile(currentUser.getId());
         return ResponseEntity.ok(profile);
     }
 
@@ -38,7 +38,7 @@ public class FarmerProfileController {
         User currentUser = securityUtils.getCurrentUser();
         validateRole(currentUser, UserRole.FARMER);
 
-        FarmerProfileDto profile = profileService.createFarmerProfile(currentUser.getId(), profileDto);
+        FarmerProfileDto profile = farmerService.createFarmerProfile(currentUser.getId(), profileDto);
         return ResponseEntity.status(HttpStatus.CREATED).body(profile);
     }
 
@@ -48,7 +48,7 @@ public class FarmerProfileController {
         User currentUser = securityUtils.getCurrentUser();
         validateRole(currentUser, UserRole.FARMER);
 
-        FarmerProfileDto profile = profileService.updateFarmerProfile(currentUser.getId(), profileDto);
+        FarmerProfileDto profile = farmerService.updateFarmerProfile(currentUser.getId(), profileDto);
         return ResponseEntity.ok(profile);
     }
 

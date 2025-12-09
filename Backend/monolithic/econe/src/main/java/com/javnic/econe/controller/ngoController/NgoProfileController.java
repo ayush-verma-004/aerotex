@@ -5,7 +5,7 @@ import com.javnic.econe.entity.User;
 import com.javnic.econe.enums.UserRole;
 import com.javnic.econe.exception.UnauthorizedException;
 import com.javnic.econe.security.SecurityUtils;
-import com.javnic.econe.service.ProfileService;
+import com.javnic.econe.service.NGOService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -19,7 +19,7 @@ import org.springframework.web.bind.annotation.*;
 @PreAuthorize("hasRole('NGO')")
 public class NgoProfileController {
 
-    private final ProfileService profileService;
+    private final NGOService ngoService;
     private final SecurityUtils securityUtils;
 
     @GetMapping("/ngo")
@@ -27,7 +27,7 @@ public class NgoProfileController {
         User currentUser = securityUtils.getCurrentUser();
         validateRole(currentUser, UserRole.NGO);
 
-        NGOProfileDto profile = profileService.getNGOProfile(currentUser.getId());
+        NGOProfileDto profile = ngoService.getNGOProfile(currentUser.getId());
         return ResponseEntity.ok(profile);
     }
 
@@ -37,7 +37,7 @@ public class NgoProfileController {
         User currentUser = securityUtils.getCurrentUser();
         validateRole(currentUser, UserRole.NGO);
 
-        NGOProfileDto profile = profileService.updateNGOProfile(currentUser.getId(), profileDto);
+        NGOProfileDto profile = ngoService.updateNGOProfile(currentUser.getId(), profileDto);
         return ResponseEntity.ok(profile);
     }
 

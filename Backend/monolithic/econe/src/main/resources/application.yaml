@@ -4,7 +4,8 @@ spring:
 
   data:
     mongodb:
-      uri: mongodb://localhost:27017/econe
+      # Use env variable in real env, fallback only for local simple dev
+      uri: mongodb+srv://ayusho4:qwertyuiop@testing.sbmrrc2.mongodb.net/
       auto-index-creation: true
 
   mail:
@@ -32,9 +33,9 @@ spring:
         queue-capacity: 100
 
 jwt:
-  secret: ${JWT_SECRET:9ONcBYp3ZGCoSJZCvlM8NOqrwN4AYnmmpda3k7XBAI95VlYvxGSLpWkmwcBTBpo/}
-  access-token-expiration: 900000
-  refresh-token-expiration: 604800000
+  secret: 9ONcBYp3ZGCoSJZCvlM8NOqrwN4AYnmmpda3k7XBAI95VlYvxGSLpWkmwcBTBpo/
+  access-token-expiration: 900000       # 15 minutes
+  refresh-token-expiration: 604800000   # 7 days
 
 logging:
   level:
@@ -56,4 +57,11 @@ server:
     include-stacktrace: never
     include-exception: false
 
-
+carbon:
+  certificate:
+    template-path: /certificates/template.html
+  validation:
+    min-validity-years: 1
+    max-validity-years: 10
+  marketplace:
+    commission-percentage: 2.5

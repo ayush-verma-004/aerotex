@@ -1,0 +1,7 @@
+django
+pandas
+joblib
+scikit-learn
+djangorestframework
+drf-yasg
+setuptools
